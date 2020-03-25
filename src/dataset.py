@@ -31,7 +31,7 @@ def _load_csv(path):
     with open(path) as csvfile:
         reader = csv.reader(csvfile)
         lines = [row for row in reader]
-    return lines[1:] # pass the header
+    return lines[1:]  # pass the header
 
 
 def _parse(lines):
@@ -57,7 +57,7 @@ def _parse(lines):
     # Initialize Variables with empty ndarrays
     x_train = np.zeros((train_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.float32)
     y_train = np.zeros(train_num, dtype=np.uint8)
-    
+
     x_public_test = np.zeros((public_test_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.float32)
     y_public_test = np.zeros(public_test_num, dtype=np.uint8)
 
@@ -80,4 +80,4 @@ def _parse(lines):
 
 
 def load_dataset(path):
-    return parse(_load_csv(_path))
+    return _parse(_load_csv(path))
