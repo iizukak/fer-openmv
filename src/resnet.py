@@ -1,5 +1,5 @@
 """
-ResNet Implementation
+ResNet Model Implementation
 
 - ResNet-8
 - ResNet-18
@@ -15,7 +15,7 @@ https://www.tensorflow.org/guide/keras/functional#a_toy_resnet_model
 from tensorflow import keras
 from tensorflow.keras import layers
 
-from src.config import IMAGE_SIZE, CLASS_NUM
+from config import IMAGE_SIZE, CLASS_NUM
 
 
 def resnet_8():
