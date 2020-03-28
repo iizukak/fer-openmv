@@ -13,8 +13,7 @@ import tensorflow as tf
 
 import config
 import dataset
-import resnet
-import os
+import models
 
 
 def _train():
@@ -29,15 +28,13 @@ def _train():
     x_test = x_test.astype('float32') / 255.
 
     # Float to on hot vector
-    y_train = keras.utils.to_categorical(y_train, config.CLASS_NUM)
-    y_test = keras.utils.to_categorical(y_test, config.CLASS_NUM)
+    y_train = keras.utils.to_categorical(y_train, dataset.CLASS_NUM)
+    y_test = keras.utils.to_categorical(y_test, dataset.CLASS_NUM)
 
-    if config.NETWORK == "ResNet50":
-        model = resnet.resnet_50()
-    elif config.NETWORK == "ResNetM":
-        model = resnet.resnet_m()
-    else:
-        model = resnet.resnet_8()
+    if config.NETWORK == "fer_small":
+        model = models.fer_small()
+    elif config.NETWORK == "resnet_50":
+        model = models.resnet_50()
 
     model.compile(optimizer=keras.optimizers.Adam(lr=0.001,
                                                   beta_1=0.9,
@@ -48,10 +45,9 @@ def _train():
                   loss=keras.losses.CategoricalCrossentropy(from_logits=False),
                   metrics=['acc'])
 
-    checkpoint_path = "outputs/cp-ResNet8-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
+    checkpoint_path = "outputs/" + config.NETWORK + "cp-{epoch:04d}.ckpt"
 
-    cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, 
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path,
                                                      verbose=1,
                                                      save_weights_only=True,
                                                      period=5)
@@ -59,8 +55,9 @@ def _train():
     model.fit(x_train, y_train,
               batch_size=config.BATCH_SIZE,
               epochs=config.EPOCH,
-              callbacks = [cp_callback],
+              callbacks=[cp_callback],
               validation_data=(x_test, y_test))
+
 
 if __name__ == '__main__':
     _train()

@@ -25,6 +25,7 @@ import csv
 import numpy as np
 
 IMAGE_SIZE = 48
+CLASS_NUM = 7
 
 
 def _load_csv(path):

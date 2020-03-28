@@ -1,7 +1,9 @@
-IMAGE_SIZE = 48
-CLASS_NUM = 7
+# Training Parameters
+EPOCH = 300
+BATCH_SIZE = 64
 
-EPOCH = 5
-BATCH_SIZE = 1
+# Path  for fer2013.csv
+DATASET_PATH = "./dataset/fer2013.csv"
 
-DATASET_PATH = "./tests/fixture.csv"
+NETWORK = "resnet_50"
+# NETWORK = "fer_small"
