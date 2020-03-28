@@ -14,27 +14,53 @@ import tensorflow as tf
 import config
 import dataset
 import resnet
+import os
 
 
 def _train():
     (x_train, y_train), (x_test, y_test), (_, _) = dataset.load_dataset(config.DATASET_PATH)
+
+    # NHW to NHWC
     x_train = x_train[..., tf.newaxis]
     x_test = x_test[..., tf.newaxis]
+
+    # Normalization by divide 255
     x_train = x_train.astype('float32') / 255.
     x_test = x_test.astype('float32') / 255.
+
+    # Float to on hot vector
     y_train = keras.utils.to_categorical(y_train, config.CLASS_NUM)
     y_test = keras.utils.to_categorical(y_test, config.CLASS_NUM)
 
-    model = resnet.resnet_8()
-    model.compile(optimizer=keras.optimizers.RMSprop(1e-3),
-                  loss=keras.losses.CategoricalCrossentropy(from_logits=True),
+    if config.NETWORK == "ResNet50":
+        model = resnet.resnet_50()
+    elif config.NETWORK == "ResNetM":
+        model = resnet.resnet_m()
+    else:
+        model = resnet.resnet_8()
+
+    model.compile(optimizer=keras.optimizers.Adam(lr=0.001,
+                                                  beta_1=0.9,
+                                                  beta_2=0.999,
+                                                  epsilon=1e-8,
+                                                  decay=1e-4,
+                                                  amsgrad=False),
+                  loss=keras.losses.CategoricalCrossentropy(from_logits=False),
                   metrics=['acc'])
+
+    checkpoint_path = "outputs/cp-ResNet8-{epoch:04d}.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path, 
+                                                     verbose=1,
+                                                     save_weights_only=True,
+                                                     period=5)
 
     model.fit(x_train, y_train,
               batch_size=config.BATCH_SIZE,
               epochs=config.EPOCH,
-              validation_split=0.1)
-
+              callbacks = [cp_callback],
+              validation_data=(x_test, y_test))
 
 if __name__ == '__main__':
     _train()
