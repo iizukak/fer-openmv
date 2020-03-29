@@ -32,7 +32,7 @@ def fer_small():
     x = layers.Dropout(0.5)(x)
     outputs = layers.Dense(CLASS_NUM, activation='softmax')(x)
 
-    model = keras.Model(inputs, outputs, name='resnt_8')
+    model = keras.Model(inputs, outputs, name="fer_small")
     model.summary()
     return model
 

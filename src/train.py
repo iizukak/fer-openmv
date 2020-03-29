@@ -45,7 +45,7 @@ def _train():
                   loss=keras.losses.CategoricalCrossentropy(from_logits=False),
                   metrics=['acc'])
 
-    checkpoint_path = "outputs/" + config.NETWORK + "cp-{epoch:04d}.ckpt"
+    checkpoint_path = "outputs/" + config.NETWORK + "-{epoch:04d}.ckpt"
 
     cp_callback = tf.keras.callbacks.ModelCheckpoint(checkpoint_path,
                                                      verbose=1,
@@ -58,6 +58,8 @@ def _train():
               callbacks=[cp_callback],
               validation_data=(x_test, y_test))
 
+    # Save model as blobs
+    model.save("trained_models/" + config.NETWORK + ".h5")
 
 if __name__ == '__main__':
     _train()
