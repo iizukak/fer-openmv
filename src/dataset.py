@@ -27,6 +27,8 @@ import numpy as np
 IMAGE_SIZE = 48
 CLASS_NUM = 7
 
+CLASS_NAME = ["Angry", "Disgust", "Fear", "Happy", "Sad", "Surprise", "Neutral"]
+
 
 def _load_csv(path):
     with open(path) as csvfile:
