@@ -78,13 +78,15 @@ def setup_webcam(device_num):
 
     if not cap.isOpened():
         sys.exit(-1)
+
+    time.sleep(2)
     return cap
 
 
 
 def detect_face(frame, cascade):
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = cascade.detectMultiScale(gray_frame, 1.3, 5)
+    faces = cascade.detectMultiScale(gray_frame, 1.11, 5)
     return faces
 
 
