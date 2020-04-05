@@ -40,12 +40,10 @@ def demo(device_num, ext='jpg', delay=1):
             frame = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
 
         if inference_result is not None:
-            if np.argmax(inference_result) == 3:
-                expression = "HAPPY"
-            elif np.argmax(inference_result) == 5:
-                expression = "SURPRISE"
-            else:
-                expression = "NEUTRAL"
+            expression = dataset.CLASS_NAME[np.argmax(inference_result)]
+            if not np.argmax(inference_result) in [0, 3, 5, 6]:
+                expression = "None"
+
             percentage = ": {0:.2f}".format(inference_result[np.argmax(inference_result)] * 100)
             cv2.putText(frame, 
                         expression + ": " + percentage, 
