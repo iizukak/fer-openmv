@@ -11,9 +11,14 @@ class Predictor():
     Reference
     https://www.tensorflow.org/lite/convert/python_api
     """
-    def __init__(self):
+    def __init__(self, quant=False):
+        if quant:
+            suffix = "_quant"
+        else:
+            suffix = ""
+
         self.interpreter = \
-                tf.lite.Interpreter(model_path="trained_models/" + config.NETWORK + ".tflite")
+                tf.lite.Interpreter(model_path="trained_models/" + config.NETWORK + suffix + ".tflite")
         self.interpreter.allocate_tensors()
         self.input_details = self.interpreter.get_input_details()
         self.output_details = self.interpreter.get_output_details()

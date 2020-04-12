@@ -5,9 +5,7 @@ import numpy as np
 import time
 
 
-def benchmark():
-    p = Predictor()
-
+def benchmark(p):
     print("LOAD DATASET: START")
     (_, _), (_, _), (x_private_test, y_private_test) = \
             dataset.load_dataset(config.DATASET_PATH)
@@ -45,10 +43,18 @@ def benchmark():
                sum(all_results),
                (float(sum(correct_results)) / float(sum(all_results)) * 100)))
 
-    print("{0:.2f} ms for one data".format(measured_time / len(x_private_test)))
+    print("{0:.2f} ms for one data\n".format(measured_time / len(x_private_test)))
 
     return all_results, correct_results, measured_time
 
 
 if __name__ == '__main__':
-    benchmark()
+    print("Benchmark model: {0}".format(config.NETWORK))
+
+    print("Benchmark for non quantized model\n")
+    p = Predictor()
+    benchmark(p)
+
+    print("Benchmark for quantized model")
+    p = Predictor(quant=True)
+    benchmark(p)

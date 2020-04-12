@@ -38,6 +38,8 @@ def _train():
         model = models.fer_middle()
     elif config.NETWORK == "resnet_50":
         model = models.resnet_50()
+    elif config.NETWORK == "mobilenet_small":
+        model = models.mobilenet_small()
 
     # Instanciate Data Generator with Data Augmentation
     datagen = data_augmentation.generator()

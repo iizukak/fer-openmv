@@ -4,9 +4,10 @@ DNN Model Implementations
 
 from tensorflow import keras
 from tensorflow.keras import layers
+import tensorflow as tf
 
 from dataset import IMAGE_SIZE, CLASS_NUM
-from blocks import conv_bn_act
+from blocks import conv_bn_act, mobilenet_v1_block
 
 
 def fer_small():
@@ -91,5 +92,31 @@ def resnet_50():
     x = layers.Dropout(0.5)(x)
     outputs = layers.Dense(CLASS_NUM, activation='softmax')(x)
     model = keras.Model(inputs, outputs, name='resnet_50')
+    model.summary()
+    return model
+
+
+def mobilenet_small():
+    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img', dtype="float32")
+    # 48, 48, 3 -> 24, 24, 32
+    x = layers.Conv2D(32, 3, strides=2, activation=None, use_bias=False, padding="same")(inputs)
+    x = layers.BatchNormalization()(x)
+    x = tf.nn.relu(x)
+
+    # 24, 24, 32 -> 12, 12, 64
+    x = mobilenet_v1_block(64, x)
+
+    # 12, 12, 64 -> 6, 6, 128
+    x = mobilenet_v1_block(128, x)
+
+    # 6, 6, 128 -> 3, 3, 256
+    x = mobilenet_v1_block(256, x)
+
+    x = layers.GlobalAveragePooling2D()(x)
+    x = layers.Dense(256, activation='relu')(x)
+    x = layers.Dropout(0.5)(x)
+    outputs = layers.Dense(CLASS_NUM, activation='softmax')(x)
+
+    model = keras.Model(inputs, outputs, name="fer_small")
     model.summary()
     return model
