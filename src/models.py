@@ -14,7 +14,7 @@ def fer_small():
     """
     Fer Small: 7 Conv + 1 Fully Connected Layers
     """
-    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img')
     x = conv_bn_act(32, 3, "valid", inputs)
     x = conv_bn_act(64, 3, "valid", x)
     block_1_output = layers.MaxPooling2D(3)(x)
@@ -42,7 +42,7 @@ def fer_middle():
     """
     Fer Small: 14 Conv + 1 Fully Connected Layers
     """
-    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img')
     x = conv_bn_act(32, 3, "valid", inputs)
     x = conv_bn_act(64, 3, "valid", x)
     block_1_output = layers.MaxPooling2D(2)(x)
@@ -81,7 +81,7 @@ def resnet_50():
     """
     ResNet50
     """
-    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img')
     x = keras.applications.resnet50.ResNet50(include_top=False,
                                              weights=None,
                                              input_tensor=inputs,
@@ -97,7 +97,7 @@ def resnet_50():
 
 
 def mobilenet_small():
-    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 1), name='img')
     # 48, 48, 3 -> 24, 24, 32
     x = layers.Conv2D(32, 3, strides=2, activation=None, use_bias=False, padding="same")(inputs)
     x = layers.BatchNormalization()(x)

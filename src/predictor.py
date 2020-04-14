@@ -12,6 +12,7 @@ class Predictor():
     https://www.tensorflow.org/lite/convert/python_api
     """
     def __init__(self, quant=False):
+        self.quant = quant
         if quant:
             suffix = "_quant"
         else:
@@ -29,8 +30,9 @@ class Predictor():
         """
 
         # Set input data to interpreter
-        input_data = input_data / 255
         input_data = input_data[tf.newaxis, ..., tf.newaxis]
+        if not self.quant:
+            input_data = input_data.astype("float32")
         self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
 
         # Execute inference

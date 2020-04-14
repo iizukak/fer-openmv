@@ -4,7 +4,7 @@ import blocks
 
 
 def test_conv_bn_act_same():
-    inputs = keras.Input(shape=(48, 48, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(48, 48, 1), name='img', dtype="uint8")
     block = blocks.conv_bn_act(64, 3, "same", inputs)
     assert type(block) == tf.Tensor
     assert block.shape[1] == 48
@@ -13,7 +13,7 @@ def test_conv_bn_act_same():
 
 
 def test_conv_bn_act_valid():
-    inputs = keras.Input(shape=(48, 48, 1), name='img', dtype="float32")
+    inputs = keras.Input(shape=(48, 48, 1), name='img', dtype="uint8")
     block = blocks.conv_bn_act(64, 3, "valid", inputs)
     assert type(block) == tf.Tensor
     assert block.shape[1] == 46

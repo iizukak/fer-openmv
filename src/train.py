@@ -24,10 +24,6 @@ def _train():
     x_train = x_train[..., tf.newaxis]
     x_test = x_test[..., tf.newaxis]
 
-    # Normalization by divide 255
-    x_train = x_train.astype('float32') / 255.
-    x_test = x_test.astype('float32') / 255.
-
     # Float to on hot vector
     y_train = keras.utils.to_categorical(y_train, dataset.CLASS_NUM)
     y_test = keras.utils.to_categorical(y_test, dataset.CLASS_NUM)

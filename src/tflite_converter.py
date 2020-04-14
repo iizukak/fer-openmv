@@ -36,7 +36,7 @@ def convert_quant(model):
     https://www.tensorflow.org/lite/performance/post_training_quantization
     """
     (x_train, _), (_, _), (_, _) = dataset.load_dataset(config.DATASET_PATH)
-    x_train = x_train.astype('float32') / 255.
+    x_train = x_train.astype('float32')
 
     # Calibration for 1 epoch
     def representative_dataset_gen():
@@ -46,8 +46,12 @@ def convert_quant(model):
         yield [x_train[i][tf.newaxis, ..., tf.newaxis]]
 
     
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    model_path = "trained_models/" + config.NETWORK + ".h5"
+    converter = tf.compat.v1.lite.TFLiteConverter.from_keras_model_file(model_path)
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    converter.inference_input_type = tf.uint8
+    converter.inference_output_type = tf.uint8
     converter.representative_dataset = representative_dataset_gen
     tflite_quant_model = converter.convert()
     open("trained_models/" + config.NETWORK + "_quant.tflite", "wb").write(tflite_quant_model)

@@ -34,7 +34,7 @@ def demo(device_num, ext='jpg', delay=1):
             face_img = cv2.resize(face_img, dsize=(dataset.IMAGE_SIZE, dataset.IMAGE_SIZE))
             # cv2.imshow(WINDOW_NAME, face_img)
             start = time.time()
-            inference_result = p(np.array(face_img, dtype=np.float32))
+            inference_result = p(np.array(face_img, dtype=np.uint8))
             end = time.time()
             measured_time = (end - start) * 1000
             frame = cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)

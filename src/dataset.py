@@ -58,25 +58,25 @@ def _parse(lines):
     assert train_num + public_test_num + private_test_num == len(lines)
 
     # Initialize Variables with empty ndarrays
-    x_train = np.zeros((train_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.float32)
+    x_train = np.zeros((train_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.uint8)
     y_train = np.zeros(train_num, dtype=np.uint8)
 
-    x_public_test = np.zeros((public_test_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.float32)
+    x_public_test = np.zeros((public_test_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.uint8)
     y_public_test = np.zeros(public_test_num, dtype=np.uint8)
 
-    x_private_test = np.zeros((private_test_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.float32)
+    x_private_test = np.zeros((private_test_num, IMAGE_SIZE, IMAGE_SIZE), dtype=np.uint8)
     y_private_test = np.zeros(private_test_num, dtype=np.uint8)
 
     for i in range(train_num):
-        x_train[i] = np.array(train[i][1].split(' '), np.float32).reshape((IMAGE_SIZE, IMAGE_SIZE))
+        x_train[i] = np.array(train[i][1].split(' '), np.uint8).reshape((IMAGE_SIZE, IMAGE_SIZE))
         y_train[i] = train[i][0]
 
     for i in range(public_test_num):
-        x_public_test[i] = np.array(public_test[i][1].split(' '), np.float32).reshape((IMAGE_SIZE, IMAGE_SIZE))
+        x_public_test[i] = np.array(public_test[i][1].split(' '), np.uint8).reshape((IMAGE_SIZE, IMAGE_SIZE))
         y_public_test[i] = public_test[i][0]
 
     for i in range(private_test_num):
-        x_private_test[i] = np.array(private_test[i][1].split(' '), np.float32).reshape((IMAGE_SIZE, IMAGE_SIZE))
+        x_private_test[i] = np.array(private_test[i][1].split(' '), np.uint8).reshape((IMAGE_SIZE, IMAGE_SIZE))
         y_private_test[i] = private_test[i][0]
 
     return (x_train, y_train), (x_public_test, y_public_test), (x_private_test, y_private_test)
