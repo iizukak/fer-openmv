@@ -5,6 +5,7 @@ DNN Model Implementations
 from tensorflow import keras
 from tensorflow.keras import layers
 import tensorflow as tf
+import config
 
 from dataset import IMAGE_SIZE, CLASS_NUM
 from blocks import conv_bn_act, mobilenet_v1_block
@@ -112,7 +113,8 @@ def mobilenet_small():
     # 6, 6, 128 -> 3, 3, 256
     x = mobilenet_v1_block(256, x)
 
-    x = layers.GlobalAveragePooling2D()(x)
+    x = tf.nn.avg_pool(x, ksize=[1,3,3,1], strides=[1,1,1,1], padding="VALID")
+    x = tf.squeeze(x, axis = [1,2])
     x = layers.Dense(256, activation='relu')(x)
     x = layers.Dropout(0.5)(x)
     outputs = layers.Dense(CLASS_NUM, activation='softmax')(x)
