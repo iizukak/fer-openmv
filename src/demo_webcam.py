@@ -14,7 +14,7 @@ def demo(device_num, ext='jpg', delay=1):
     cap = setup_webcam(device_num)
     # cascade = cv2.CascadeClassifier('cascades/haarcascade_frontalface_alt2.xml')
     cascade = cv2.CascadeClassifier('cascades/haarcascade_frontalface_default.xml')
-    p = Predictor()
+    p = Predictor(quant=True)
     inference_result = None
 
     while True:
