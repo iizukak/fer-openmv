@@ -33,6 +33,10 @@ class Predictor():
         input_data = input_data[tf.newaxis, ..., tf.newaxis]
         if not self.quant:
             input_data = input_data.astype("float32")
+        else:
+            input_data = input_data.astype("int32")
+            input_data = input_data - 128
+            input_data = input_data.astype("int8")
         self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
 
         # Execute inference
