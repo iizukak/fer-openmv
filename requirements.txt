@@ -1,4 +1,4 @@
-tensorflow-gpu==2.0.1
+tensorflow-gpu==2.5.1
 flake8
 pytest
 h5py
